@@ -6,6 +6,8 @@ import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static pruebasnb.bombers.Conexion.close;
+
 public class BomberDAO {
 
     private static final String SQL_SELECT = "SELECT CodBomber, Nom, Adreca, CodParc, CodCarrec, CodEquip";
@@ -37,10 +39,43 @@ public class BomberDAO {
                 bombers.add(bomber);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace(System.out);
+        }
+        finally {
+            close(conn);
+            close(stmt);
+            close(rs);
         }
 
 
         return bombers;
     }
+
+    public int insertar(Bomber bomber){
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        int result = 0;
+        try {
+            conn = Conexion.getConnection();
+            stmt = conn.prepareStatement(SQL_INSERT);
+            stmt.setInt(1, bomber.getCodBomber());
+            stmt.setString(2, bomber.getNom());
+            stmt.setString(3, bomber.getAdreca());
+            stmt.setInt(4, bomber.getCodParc());
+            stmt.setInt(5, bomber.getCodCarrec());
+            stmt.setInt(6, bomber.getCodEquip());
+            result = stmt.executeQuery();
+
+        }catch (SQLException e) {
+           e.printStackTrace(System.out);
+        }finally {
+            try {
+                close(stmt);
+            }catch (SQLException e) {
+                e.printStackTrace(System.out);
+            }
+        }
+
+    }
+
 }
