@@ -5,7 +5,7 @@ public class Equip {
     private int codEquip;
     private String nom;
 
-    public Equip(int codEquip) {
+    public Equip(int codEquip){
         this.codEquip = codEquip;
     }
 
@@ -15,18 +15,22 @@ public class Equip {
     }
 
     public int getCodEquip() {
+
         return codEquip;
     }
 
     public void setCodEquip(int codEquip) {
+
         this.codEquip = codEquip;
     }
 
     public String getNom() {
+
         return nom;
     }
 
     public void setNom(String nom) {
+
         this.nom = nom;
     }
 

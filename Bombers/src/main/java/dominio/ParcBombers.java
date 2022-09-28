@@ -7,6 +7,7 @@ public class ParcBombers {
     private int categoria;
 
     public ParcBombers(int codParc) {
+
         this.codParc = codParc;
     }
 
@@ -14,5 +15,38 @@ public class ParcBombers {
         this.codParc = codParc;
         this.adreca = adreca;
         this.categoria = categoria;
+    }
+
+    public int getCodParc() {
+        return codParc;
+    }
+
+    public void setCodParc(int codParc) {
+        this.codParc = codParc;
+    }
+
+    public String getAdreca() {
+        return adreca;
+    }
+
+    public void setAdreca(String adreca) {
+        this.adreca = adreca;
+    }
+
+    public int getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(int categoria) {
+        this.categoria = categoria;
+    }
+
+    @Override
+    public String toString() {
+        return "ParcBombers{" +
+                "codParc=" + codParc +
+                ", adreca='" + adreca + '\'' +
+                ", categoria=" + categoria +
+                '}';
     }
 }

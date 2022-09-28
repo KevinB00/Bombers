@@ -31,22 +31,27 @@ public class Bomber {
     }
 
     public int getCodBomber() {
+
         return codBomber;
     }
 
     public void setCodBomber(int codBomber) {
+
         codBomber = codBomber;
     }
 
     public String getNom() {
+
         return nom;
     }
 
     public void setNom(String nom) {
+
         this.nom = nom;
     }
 
     public String getAdreca() {
+
         return adreca;
     }
 
@@ -55,26 +60,32 @@ public class Bomber {
     }
 
     public int getCodParc() {
+
         return codParc;
     }
 
     public void setCodParc(int codParc) {
+
         this.codParc = codParc;
     }
 
     public int getCodCarrec() {
+
         return codCarrec;
     }
 
     public void setCodCarrec(int codCarrec) {
+
         this.codCarrec = codCarrec;
     }
 
     public int getCodEquip() {
+
         return codEquip;
     }
 
     public void setCodEquip(int codEquip) {
+
         this.codEquip = codEquip;
     }
 
