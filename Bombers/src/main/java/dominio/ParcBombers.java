@@ -11,6 +11,11 @@ public class ParcBombers {
         this.codParc = codParc;
     }
 
+    public ParcBombers(String adreca, int categoria) {
+        this.adreca = adreca;
+        this.categoria = categoria;
+    }
+
     public ParcBombers(int codParc, String adreca, int categoria) {
         this.codParc = codParc;
         this.adreca = adreca;

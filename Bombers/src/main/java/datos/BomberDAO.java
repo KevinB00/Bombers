@@ -9,12 +9,17 @@ import java.sql.*;
 import static conexion.Conexion.close;
 
 public class BomberDAO {
+    private Connection conexionTransaccional;
 
     private static final String SQL_SELECT = "SELECT CodBomber, Nom, Adreca, CodParc, CodCarrec, CodEquip FROM bomber";
-    private static final String SQL_INSERT = "INSERT INTO bomber (Nom, Adreca, CodParc, CodCarrec, CodEquip) VALUES (?,?,?,?,?,?)";
+    private static final String SQL_INSERT = "INSERT INTO bomber (Nom, Adreca, CodParc, CodCarrec, CodEquip) VALUES (?,?,?,?,?)";
     private static final String SQL_UPDATE = "UPDATE bomber Nom=?, Adreca=?, CodParc=?, CodCarrec=?, CodEquip=? WHERE CodBomber=?";
     private static final String SQL_DELETE = "DELETE FROM bomber WHERE CodBomber=?";
+    public BomberDAO(){ };
 
+    public BomberDAO(Connection conexionTransaccional) {
+        this.conexionTransaccional = conexionTransaccional;
+    }
     public List<Bomber> seleccionar() throws SQLException {
 
         Connection conn = null;
@@ -24,7 +29,8 @@ public class BomberDAO {
         List<Bomber> bombers = new ArrayList<>();
 
         try {
-            conn = Conexion.getConnection();
+            conn = this.conexionTransaccional != null ?
+            this.conexionTransaccional :Conexion.getConnection();
             stmt = conn.prepareStatement(SQL_SELECT);
             rs = stmt.executeQuery();
             while (rs.next()) {
@@ -41,20 +47,28 @@ public class BomberDAO {
         } catch (SQLException e) {
             e.printStackTrace(System.out);
         } finally {
-            close(conn);
-            close(stmt);
-            close(rs);
+            try {
+                Conexion.close(rs);
+                Conexion.close(stmt);
+                if (this.conexionTransaccional == null) {
+                    Conexion.close(conn);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace(System.out);
+                }
+            }
+        return bombers;
         }
 
-        return bombers;
-    }
 
-    public int insertar(Bomber bomber) {
+
+    public int insertar(Bomber bomber) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
         int result = 0;
         try {
-            conn = Conexion.getConnection();
+            conn = this.conexionTransaccional != null ?
+                    this.conexionTransaccional : Conexion.getConnection();
             stmt = conn.prepareStatement(SQL_INSERT);
             stmt.setString(1, bomber.getNom());
             stmt.setString(2, bomber.getAdreca());
@@ -68,24 +82,24 @@ public class BomberDAO {
         } finally {
             try {
                 close(stmt);
+                if (this.conexionTransaccional == null) {
+                    Conexion.close(conn);
+                }
             } catch (SQLException e) {
                 e.printStackTrace(System.out);
             }
-            try {
-                close(conn);
-            } catch (SQLException e) {
-                e.printStackTrace(System.out);
-            }
+
         }
         return result;
     }
 
-    public int update(Bomber bomber) {
+    public int update(Bomber bomber) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
         int result = 0;
         try {
-            conn = Conexion.getConnection();
+            conn = this.conexionTransaccional != null ?
+                    this.conexionTransaccional : Conexion.getConnection();
             stmt = conn.prepareStatement(SQL_UPDATE);
             stmt.setString(1, bomber.getNom());
             stmt.setString(2, bomber.getAdreca());
@@ -99,25 +113,25 @@ public class BomberDAO {
         } finally {
             try {
                 close(stmt);
+                if (this.conexionTransaccional == null) {
+                    Conexion.close(conn);
+                }
             } catch (SQLException e) {
                 e.printStackTrace(System.out);
             }
-            try {
-                close(conn);
-            } catch (SQLException e) {
-                e.printStackTrace(System.out);
-            }
+
         }
         return result;
 
     }
 
-    public int delete(Bomber bomber) {
+    public int delete(Bomber bomber) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
         int result = 0;
         try {
-            conn = Conexion.getConnection();
+            conn = this.conexionTransaccional != null ?
+                    this.conexionTransaccional : Conexion.getConnection();
             stmt = conn.prepareStatement(SQL_DELETE);
             stmt.setInt(1, bomber.getCodBomber());
            result = stmt.executeUpdate();
@@ -126,14 +140,13 @@ public class BomberDAO {
         }finally {
             try {
                 close(stmt);
+                if (this.conexionTransaccional == null) {
+                    Conexion.close(conn);
+                }
             } catch (SQLException e) {
                 e.printStackTrace(System.out);
             }
-            try {
-                close(conn);
-            } catch (SQLException e) {
-                e.printStackTrace(System.out);
-            }
+
         }
         return result;
         }
