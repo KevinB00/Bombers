@@ -1,5 +1,7 @@
 package dominio;
-
+/*
+ * Se crea la clase ParcBombers con sus respectivas variables, constructores, getters, setters
+ */
 public class ParcBombers {
 
     private int codParc;

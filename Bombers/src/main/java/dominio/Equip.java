@@ -1,5 +1,7 @@
 package dominio;
-
+/*
+ * Se crea la clase Equip con sus respectivas variables, constructores, getters, setters
+ */
 public class Equip {
 
     private int codEquip;
