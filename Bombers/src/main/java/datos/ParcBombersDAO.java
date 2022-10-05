@@ -10,7 +10,7 @@ import static conexion.Conexion.close;
 public class ParcBombersDAO {
     private static final String SQL_SELECT = "SELECT CodParc, Adreca, Categoria FROM parc_bombers";
     private static final String SQL_INSERT = "INSERT INTO parc_bombers (Adreca, Categoria) VALUES (?, ?)";
-    private static final String SQL_UPDATE = "UPDATE parc_bombers Adreca=?, Categoria=? WHERE CodParc=?";
+    private static final String SQL_UPDATE = "UPDATE parc_bombers SET Adreca=?, Categoria=? WHERE CodParc=?";
     private static final String SQL_DELETE = "DELETE FROM parc_bombers WHERE CodParc = ?";
 
     public List<ParcBombers> seleccionar() throws SQLException {
@@ -79,6 +79,7 @@ public class ParcBombersDAO {
             stmt = conn.prepareStatement(SQL_UPDATE);
             stmt.setString(1, parcBombers.getAdreca());
             stmt.setInt(2, parcBombers.getCategoria());
+            stmt.setInt(3, parcBombers.getCodParc());
             result = stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace(System.out);
@@ -104,8 +105,7 @@ public class ParcBombersDAO {
         try {
             conn = Conexion.getConnection();
             stmt = conn.prepareStatement(SQL_DELETE);
-            stmt.setString(1, parcBombers.getAdreca());
-            stmt.setInt(2, parcBombers.getCategoria());
+            stmt.setInt(1, parcBombers.getCodParc());
             result = stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace(System.out);

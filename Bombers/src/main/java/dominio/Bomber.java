@@ -1,8 +1,5 @@
 package dominio;
 
-/*
-* Se crea la clase Bomber con sus respectivas variables, constructores, getters, setters
-*/
 public class Bomber {
 
     private int codBomber;
@@ -13,7 +10,8 @@ public class Bomber {
     private int codEquip;
 
 
-    public Bomber() {
+    public Bomber(int cod) {
+        this.codBomber = cod;
     }
 
     public Bomber(String nom, String adreca, int codParc, int codCarrec,int codEquip) {

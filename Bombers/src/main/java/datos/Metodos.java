@@ -8,36 +8,37 @@ import java.util.Scanner;
 
 
 public class Metodos {
-    List<Bomber>bombers;
-    boolean repetir = false;
+    private static List<Bomber>bombers;
+    private static boolean repetir = false;
+    private static Scanner tcl = new Scanner(System.in);
+    private static BomberDAO bomberDAO = new BomberDAO();
+    private static ParcBombersDAO parcBombersDAO = new ParcBombersDAO();
 
-    Scanner tcl = new Scanner(System.in);
-    BomberDAO bomberDAO = new BomberDAO();
-    ParcBombersDAO parcBombersDAO = new ParcBombersDAO();
-
-    public void menu() throws SQLException {
-        int opcion;
-        do{
-            System.out.println("<------------------ BASE DE DATOS BOMBEROS ------------------>");
-            System.out.println("1. Listar bomberos por parque");
-            System.out.println("2. Insertar Parque de Bomberos-VIP");
-            System.out.println("3. Borrar bombero y sus turnos trabajados");
-            System.out.println("0. Salir");
-            System.out.println("Eliga una opción: ");
-             opcion = tcl.nextInt();
-            switch (opcion){
-                case 1:
-                    listarBomber();
-                    break;
-                case 2:
-                    insertarParcVIP();
-                    break;
-
+    public static void borrarBomber() throws SQLException{
+        tcl.nextLine();
+        int cod = 0;
+        do {
+            try {
+                repetir = false;
+                System.out.println("Borrar bombero");
+                System.out.println("Introduzca el código del bombero a borrar");
+                cod = tcl.nextInt();
+            } catch (Exception e) {
+                repetir = true;
+                tcl.nextLine();
+                System.out.println("Introduzca un valor válido");
             }
-        }while (opcion != 0);
+        }while (repetir);
+        for (int i = 0; i <bombers.size(); i++) {
+            if(bombers.get(i).getCodBomber() == cod) {
+                bomberDAO.delete(bombers.get(i));
+                System.out.println("Bombero borrado");
+            }
+        }
     }
 
-    public void insertarParcVIP() {
+    public static void insertarParcVIP() throws SQLException{
+        tcl.nextLine();
         String direccion = null;
         int categoria = 0;
         do {
@@ -53,7 +54,7 @@ public class Metodos {
 
             }catch(Exception e){
                 repetir = true;
-                e.printStackTrace();
+                tcl.nextLine();
                 System.out.println("Introduzca un valor válido");
             }
 
@@ -61,18 +62,21 @@ public class Metodos {
         ParcBombers parcBombers = new ParcBombers(direccion, categoria);
         parcBombersDAO.insert(parcBombers);
     }
-    public void listarBomber() throws SQLException {
+    public static void listarBomber() throws SQLException {
+        tcl.nextLine();
         bombers = bomberDAO.seleccionar();
         int numeroParque = 0;
         do {
+            repetir = false;
             try {
-                repetir = false;
+
                 System.out.println("Introduzca el código del parque: ");
                 numeroParque = tcl.nextInt();
             } catch (Exception e) {
                 repetir = true;
-                e.printStackTrace();
+                tcl.nextLine();
                 System.out.println("Introduzca un valor válido");
+
             }
         }while(repetir);
         for (int i=0; i < bombers.size();i++){
