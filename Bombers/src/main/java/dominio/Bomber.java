@@ -1,5 +1,8 @@
 package dominio;
 
+/*
+* Se crea la clase Bomber con sus respectivas variables, constructores, getters, setters
+*/
 public class Bomber {
 
     private int codBomber;

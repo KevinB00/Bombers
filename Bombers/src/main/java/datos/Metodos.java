@@ -15,6 +15,7 @@ public class Metodos {
     private static ParcBombersDAO parcBombersDAO = new ParcBombersDAO();
 
     public static void borrarBomber() throws SQLException{
+        System.out.println();
         tcl.nextLine();
         int cod = 0;
         do {
@@ -23,6 +24,7 @@ public class Metodos {
                 System.out.println("Borrar bombero");
                 System.out.println("Introduzca el código del bombero a borrar");
                 cod = tcl.nextInt();
+                System.out.println();
             } catch (Exception e) {
                 repetir = true;
                 tcl.nextLine();
@@ -38,6 +40,7 @@ public class Metodos {
     }
 
     public static void insertarParcVIP() throws SQLException{
+        System.out.println();
         tcl.nextLine();
         String direccion = null;
         int categoria = 0;
@@ -63,6 +66,7 @@ public class Metodos {
         parcBombersDAO.insert(parcBombers);
     }
     public static void listarBomber() throws SQLException {
+        System.out.println();
         tcl.nextLine();
         bombers = bomberDAO.seleccionar();
         int numeroParque = 0;
