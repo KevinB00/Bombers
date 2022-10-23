@@ -1,7 +1,7 @@
-conexion/Conexion.class
-datos/BomberDAO.class
-dominio/ParcBombers.class
-datos/ParcBombersDAO.class
-dominio/Equip.class
-dominio/Bomber.class
-datos/EquipDAO.class
+datos\ParcBombersDAO.class
+dominio\Bomber.class
+dominio\Equip.class
+conexion\Conexion.class
+datos\EquipDAO.class
+datos\BomberDAO.class
+dominio\ParcBombers.class

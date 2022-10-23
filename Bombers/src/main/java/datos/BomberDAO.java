@@ -13,9 +13,9 @@ import static conexion.Conexion.close;
 public class BomberDAO {
     private Connection conexionTransaccional;
 
-    private static final String SQL_SELECT = "SELECT CodBomber, Nom, Adreca, CodParc, CodCarrec, CodEquip FROM bomber";
-    private static final String SQL_INSERT = "INSERT INTO bomber (Nom, Adreca, CodParc, CodCarrec, CodEquip) VALUES (?,?,?,?,?)";
-    private static final String SQL_UPDATE = "UPDATE bomber SET Nom=?, Adreca=?, CodParc=?, CodCarrec=?, CodEquip=? WHERE CodBomber=?";
+    private static final String SQL_SELECT = "SELECT CodBomber, Nom, Adreca, CodParc, CodCarrec, Categoria_nomina  CodEquip FROM bomber";
+    private static final String SQL_INSERT = "INSERT INTO bomber (Nom, Adreca, CodParc, CodCarrec, CodEquip, Categoria_nomina) VALUES (?,?,?,?,?,?)";
+    private static final String SQL_UPDATE = "UPDATE bomber SET Nom=?, Adreca=?, CodParc=?, CodCarrec=?, CodEquip=?, Categoria_nomina WHERE CodBomber=?";
     private static final String SQL_DELETE = "DELETE FROM bomber WHERE CodBomber=?";
     public BomberDAO(){ };
 
@@ -45,8 +45,9 @@ public class BomberDAO {
                 int CodParc = rs.getInt("CodParc");
                 int CodCarrec = rs.getInt("CodCarrec");
                 int CodEquip = rs.getInt("CodEquip");
+                int Categoria_nomina = rs.getInt("Categoria_nomina");
 
-                bomber = new Bomber(CodBomber, Nom, Adreca, CodParc, CodCarrec, CodEquip);
+                bomber = new Bomber(CodBomber, Nom, Adreca, CodParc, CodCarrec, CodEquip, Categoria_nomina);
                 bombers.add(bomber);
             }
         } catch (SQLException e) {
@@ -81,6 +82,7 @@ public class BomberDAO {
             stmt.setInt(3, bomber.getCodParc());
             stmt.setInt(4, bomber.getCodCarrec());
             stmt.setInt(5, bomber.getCodEquip());
+            stmt.setInt(6, bomber.getCatnomina());
             result = stmt.executeUpdate();
 
         } catch (SQLException e) {
@@ -117,6 +119,7 @@ public class BomberDAO {
             stmt.setInt(4, bomber.getCodCarrec());
             stmt.setInt(5, bomber.getCodEquip());
             stmt.setInt(6, bomber.getCodBomber());
+            stmt.setInt(7, bomber.getCatnomina());
             result = stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace(System.out);

@@ -14,9 +14,9 @@ public class TestEquipDAO {
             if (conexion.getAutoCommit()) {
             conexion.setAutoCommit(false);
             }
-           // Equip nuevoEquip = new Equip( 2, "equipo2");
-            //equipDAO.insert(nuevoEquip);
-
+            Equip nuevoEquip = new Equip("equipo4");
+            equipDAO.insert(nuevoEquip);
+/*
            //BORRAR
             Equip equipBorrar = new Equip(3);
             equipDAO.delete(equipBorrar);
@@ -24,6 +24,7 @@ public class TestEquipDAO {
             //UPDATE
             Equip equipModificar = new Equip(2, "equip1");
             equipDAO.update(equipModificar);
+          */
             conexion.commit();
             List<Equip> equipList = equipDAO.seleccionar();
             equipList.forEach(equip -> {

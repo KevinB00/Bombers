@@ -13,7 +13,7 @@ public class EquipDAO {
     private Connection conexionTransaccional;
 
     private static final String SQL_SELECT = "SELECT CodEquip, Nom FROM equip";
-    private static final String SQL_INSERT = "INSERT INTO equip (CodEquip, Nom) VALUES (?, ?)";
+    private static final String SQL_INSERT = "INSERT INTO equip (Nom) VALUES (?)";
     private static final String SQL_UPDATE = "UPDATE equip SET Nom=? WHERE CodEquip =?";
     private static final String SQL_DELETE = "DELETE FROM equip WHERE CodEquip =?";
 
@@ -70,8 +70,7 @@ public class EquipDAO {
             conn = this.conexionTransaccional != null ?
                     this.conexionTransaccional : Conexion.getConnection();
             stmt = conn.prepareStatement(SQL_INSERT);
-            stmt.setInt(1, equip.getCodEquip());
-            stmt.setString(2, equip.getNom());
+            stmt.setString(1, equip.getNom());
             result = stmt.executeUpdate();
         }catch (SQLException e) {
             e.printStackTrace(System.out);

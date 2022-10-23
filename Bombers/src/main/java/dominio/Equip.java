@@ -10,7 +10,9 @@ public class Equip {
     public Equip(int codEquip){
         this.codEquip = codEquip;
     }
-
+    public Equip(String nom) {
+        this.nom = nom;
+    }
     public Equip(int codEquip, String nom) {
         this.codEquip = codEquip;
         this.nom = nom;

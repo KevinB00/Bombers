@@ -14,16 +14,17 @@ public class TestParcBombers {
             if(conexion.getAutoCommit()) {
                 conexion.setAutoCommit(false);
             }
-            //ParcBombers nuevoParcBombers = new ParcBombers("Nº335", 2);
-            //parcBombersDAO.insert(nuevoParcBombers);
+           ParcBombers nuevoParcBombers = new ParcBombers("C/P90", 2);
+            parcBombersDAO.insert(nuevoParcBombers);
 
             //BORRAR
-            ParcBombers borrarParcBombers = new ParcBombers(3);
+            ParcBombers borrarParcBombers = new ParcBombers(6);
             parcBombersDAO.delete(borrarParcBombers);
 
             //UPDATE
             ParcBombers updateParcBombers = new ParcBombers(2, "C/4522", 1);
             parcBombersDAO.update(updateParcBombers);
+
             conexion.commit();
 
             List<ParcBombers> parcBombers = parcBombersDAO.seleccionar();

@@ -1,5 +1,7 @@
 package datos;
+import conexion.Conexion;
 import dominio.Bomber;
+import dominio.Equip;
 import dominio.ParcBombers;
 
 import java.sql.*;
@@ -8,44 +10,279 @@ import java.util.Scanner;
 
 
 public class Metodos {
-    private static List<Bomber>bombers;
     private static boolean repetir = false;
     private static Scanner tcl = new Scanner(System.in);
     private static BomberDAO bomberDAO = new BomberDAO();
     private static ParcBombersDAO parcBombersDAO = new ParcBombersDAO();
+    private static EquipDAO equipDAO = new EquipDAO();
 
-    public static void borrarBomber() throws SQLException{
+
+    public static void borrarBomber() throws SQLException {
+        Connection conexion = Conexion.getConnection();
         System.out.println();
         tcl.nextLine();
+        Bomber bomberBorrar;
         int cod = 0;
         do {
             try {
+                if (conexion.getAutoCommit()) {
+                    conexion.setAutoCommit(false);
+                }
                 repetir = false;
                 System.out.println("Borrar bombero");
                 System.out.println("Introduzca el código del bombero a borrar");
                 cod = tcl.nextInt();
+                bomberBorrar = new Bomber(cod);
+                bomberDAO.delete(bomberBorrar);
+                System.out.println("Bombero borrado");
                 System.out.println();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.out.println("Fallo en la operacion de inserción. Se ejecuta rollback");
+                try {
+                    conexion.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            } catch (Exception e) {
+                repetir = true;
+                tcl.nextLine();
+                System.out.println("Introduzca un valor válido");
+            }
+        } while (repetir);
+        List<Bomber> bombers = bomberDAO.seleccionar();
+        bombers.forEach(bomber -> {
+            System.out.println("bomber = " + bomber);
+        });
+
+    }
+    public static void insertarBombero() throws SQLException {
+        Connection conexion = Conexion.getConnection();
+        System.out.println();
+        tcl.nextLine();
+        String nombre = null;
+        String adreca = null;
+        int codParc = 0;
+        int codCarrec = 0;
+        int codEquip = 0;
+        int categoriaNomina = 0;
+        do{
+            try {
+                if(conexion.getAutoCommit()){
+                    conexion.setAutoCommit(false);
+                }
+                repetir = false;
+                System.out.println("Insertar Bombero");
+                System.out.println("Nombre del bombero: ");
+                nombre = tcl.nextLine();
+                System.out.println("Inserte dirección del bombero: ");
+                adreca = tcl.nextLine();
+                System.out.println("Código del parque: ");
+                codParc = tcl.nextInt();
+                System.out.println("Código del cargo: ");
+                codCarrec = tcl.nextInt();
+                System.out.println("Código del equipo: ");
+                codEquip = tcl.nextInt();
+                System.out.println("Categoria de la nomina: ");
+                categoriaNomina = tcl.nextInt();
+                Bomber bomber = new Bomber(nombre, adreca, codParc, codCarrec, codEquip, categoriaNomina);
+                bomberDAO.insert(bomber);
+            } catch (SQLException e) {
+                System.out.println("Fallo en la operacion de inserción. Se ejecuta rollback");
+                conexion.rollback();
+                } catch (Exception e) {
+                repetir = true;
+                tcl.nextLine();
+                System.out.println("Introduzca un valor válido");
+            }
+        }while (repetir);
+        List<Bomber> bombers = bomberDAO.seleccionar();
+        bombers.forEach(bomber -> {
+            System.out.println("Bomber = " + bomber);
+        });
+    }
+public static void actualizarBombero() throws SQLException {
+    Connection conexion = Conexion.getConnection();
+    System.out.println();
+    tcl.nextLine();
+    String nombre = null;
+    String adreca = null;
+    int codParc = 0;
+    int codCarrec = 0;
+    int codEquip = 0;
+    int codBombero = 0;
+    int catNomina = 0;
+
+    do{
+        try {
+            if(conexion.getAutoCommit()){
+                conexion.setAutoCommit(false);
+            }
+            repetir = false;
+            System.out.println("Actualizar Bombero");
+            System.out.println("Nombre del bombero: ");
+            nombre = tcl.nextLine();
+            System.out.println("Inserte dirección del bombero: ");
+            adreca = tcl.nextLine();
+            System.out.println("Código del parque: ");
+            codParc = tcl.nextInt();
+            System.out.println("Código del cargo: ");
+            codCarrec = tcl.nextInt();
+            System.out.println("Código del equipo: ");
+            codEquip = tcl.nextInt();
+            System.out.println("Categoria de la nómina");
+            catNomina = tcl.nextInt();
+            System.out.println("Código del Bombero a actualizar: ");
+            codBombero = tcl.nextInt();
+            Bomber bomber = new Bomber(codBombero, nombre, adreca, codParc, codCarrec, codEquip, catNomina);
+            bomberDAO.update(bomber);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Fallo en la operacion de inserción. Se ejecuta rollback");
+            try {
+                conexion.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } catch (Exception e) {
+            repetir = true;
+            tcl.nextLine();
+            System.out.println("Introduzca un valor válido");
+        }
+    }while (repetir);
+    List<Bomber> bombers = bomberDAO.seleccionar();
+    bombers.forEach(bomber -> {
+        System.out.println("Bomber = " + bomber);
+    });
+}
+    public static void insertarParc() throws SQLException {
+        Connection conexion = Conexion.getConnection();
+        System.out.println();
+        tcl.nextLine();
+        String direccion = null;
+        int categoria = 0;
+        do{
+            try {
+                if(conexion.getAutoCommit()){
+                    conexion.setAutoCommit(false);
+                }
+                repetir = false;
+                System.out.println("Insertar Parc: ");
+                System.out.println("Inserta dirección del parque: ");
+                direccion = tcl.nextLine();
+                System.out.println("Inserta categoría: ");
+                categoria = tcl.nextInt();
+                ParcBombers parcBombers = new ParcBombers(direccion, categoria);
+                parcBombersDAO.insert(parcBombers);
+            }catch (SQLException e) {
+                e.printStackTrace();
+                System.out.println("Fallo en la operacion de inserción. Se ejecuta rollback");
+                try {
+                    conexion.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
             } catch (Exception e) {
                 repetir = true;
                 tcl.nextLine();
                 System.out.println("Introduzca un valor válido");
             }
         }while (repetir);
-        for (int i = 0; i <bombers.size(); i++) {
-            if(bombers.get(i).getCodBomber() == cod) {
-                bomberDAO.delete(bombers.get(i));
-                System.out.println("Bombero borrado");
+        List<ParcBombers> parcBombers = parcBombersDAO.seleccionar();
+        parcBombers.forEach(parcBomber -> {
+            System.out.println("parcBombers = " + parcBomber);
+        });
+    }
+    public static void updateParcBombers() throws SQLException {
+        Connection conexion = Conexion.getConnection();
+        System.out.println();
+        tcl.nextLine();
+        String direccion = null;
+        int categoria = 0;
+        int codParc = 0;
+        do{
+            try {
+                if(conexion.getAutoCommit()){
+                    conexion.setAutoCommit(false);
+                }
+                repetir = false;
+                System.out.println("Actualizar Parc: ");
+                System.out.println("Inserta dirección del parque: ");
+                direccion = tcl.nextLine();
+                System.out.println("Inserta categoría: ");
+                categoria = tcl.nextInt();
+                System.out.println("Código del parque a actualizar: ");
+                codParc = tcl.nextInt();
+                ParcBombers parcBombers = new ParcBombers(codParc, direccion, categoria);
+                parcBombersDAO.update(parcBombers);
+            }catch (SQLException e) {
+                e.printStackTrace();
+                System.out.println("Fallo en la operacion de inserción. Se ejecuta rollback");
+                try {
+                    conexion.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            } catch (Exception e) {
+                repetir = true;
+                tcl.nextLine();
+                System.out.println("Introduzca un valor válido");
             }
-        }
+        }while (repetir);
+        List<ParcBombers> parcBombers = parcBombersDAO.seleccionar();
+        parcBombers.forEach(parcBomber -> {
+            System.out.println("parcBombers = " + parcBomber);
+        });
     }
 
-    public static void insertarParcVIP() throws SQLException{
+    public static void eliminarParcBombers() throws SQLException {
+        Connection conexion = Conexion.getConnection();
+        System.out.println();
+        tcl.nextLine();
+        int cod = 0;
+        do {
+            try {
+                if (conexion.getAutoCommit()){
+                    conexion.setAutoCommit(false);
+                }
+                repetir = false;
+                System.out.println("Borrar Parque: ");
+                System.out.println("Inserta el código del parque");
+                cod = tcl.nextInt();
+                ParcBombers parcBombers = new ParcBombers(cod);
+                parcBombersDAO.delete(parcBombers);
+                System.out.println("Parque borrado");
+                System.out.println();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.out.println("Fallo en la operacion de inserción. Se ejecuta rollback");
+                try {
+                    conexion.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            } catch (Exception e) {
+                repetir = true;
+                tcl.nextLine();
+                System.out.println("Introduzca un valor válido");
+            }
+        }while (repetir);
+        List<ParcBombers> parcBombers = parcBombersDAO.seleccionar();
+        parcBombers.forEach(parcBomber -> {
+            System.out.println("parcBombers = " + parcBomber);
+        });
+    }
+    public static void insertarParcVIP() throws SQLException {
+        Connection conexion = Conexion.getConnection();
         System.out.println();
         tcl.nextLine();
         String direccion = null;
         int categoria = 0;
         do {
             try {
+                if (conexion.getAutoCommit()) {
+                    conexion.setAutoCommit(false);
+                }
                 repetir = false;
                 System.out.println("Insertar PARQUE VIP");
                 System.out.println("Introduzca la dirección del parque: ");
@@ -53,41 +290,166 @@ public class Metodos {
                 do {
                     System.out.println("Introduzca la categoría del parque (VIP>4):");
                     categoria = tcl.nextInt();
-                }while (categoria < 4);
-
-            }catch(Exception e){
-                repetir = true;
-                tcl.nextLine();
-                System.out.println("Introduzca un valor válido");
-            }
-
-        }while (repetir) ;
-        ParcBombers parcBombers = new ParcBombers(direccion, categoria);
-        parcBombersDAO.insert(parcBombers);
-    }
-    public static void listarBomber() throws SQLException {
-        System.out.println();
-        tcl.nextLine();
-        bombers = bomberDAO.seleccionar();
-        int numeroParque = 0;
-        do {
-            repetir = false;
-            try {
-
-                System.out.println("Introduzca el código del parque: ");
-                numeroParque = tcl.nextInt();
+                } while (categoria < 5);
+                ParcBombers parcBombers = new ParcBombers(direccion, categoria);
+                parcBombersDAO.insert(parcBombers);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.out.println("Fallo en la operacion de inserción. Se ejecuta rollback");
+                try {
+                    conexion.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
             } catch (Exception e) {
                 repetir = true;
                 tcl.nextLine();
                 System.out.println("Introduzca un valor válido");
+            }
+        } while (repetir);
+        List<ParcBombers> parcBombers = parcBombersDAO.seleccionar();
+        parcBombers.forEach(parcBomber -> {
+            System.out.println("parcBombers = " + parcBomber);
+        });
+    }
+    public static void insertarEquipo() throws SQLException {
+        Connection conexion = Conexion.getConnection();
+        System.out.println();
+        tcl.nextLine();
+        String nombre = null;
+        do{
+            try {
+                if(conexion.getAutoCommit()) {
+                    conexion.setAutoCommit(false);
+                }
+                repetir = false;
+                System.out.println("Insertar Equipo: ");
+                System.out.println("Introduzca el nombre: ");
+                nombre = tcl.nextLine();
+                Equip equip = new Equip(nombre);
+                equipDAO.insert(equip);
+            }catch (SQLException e) {
+                e.printStackTrace();
+                System.out.println("Fallo en la operacion de inserción. Se ejecuta rollback");
+                try {
+                    conexion.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            } catch (Exception e) {
+                repetir = true;
+                tcl.nextLine();
+                System.out.println("Introduzca un valor válido");
+            }
+        }while (repetir);
+        List<Equip>equips = equipDAO.seleccionar();
+        equips.forEach(equip -> {
+            System.out.println("Equip = " + equip);
+        });
+    }
+    public static void actualizarEquipo() throws SQLException {
+        Connection conexion = Conexion.getConnection();
+        System.out.println();
+        tcl.nextLine();
+        String nombre = null;
+        int codEquip = 0;
+        do{
+            try{
+                if(conexion.getAutoCommit()){
+                    conexion.setAutoCommit(false);
+                }
+                repetir = false;
+                System.out.println("Actualizar Equipo");
+                System.out.println("Introduzca nombre: ");
+                nombre = tcl.nextLine();
+                System.out.println("Introduzca el código del equipo a actualizar: ");
+                codEquip = tcl.nextInt();
+                Equip equip = new Equip(codEquip, nombre);
+                equipDAO.update(equip);
+            }catch (SQLException e) {
+                e.printStackTrace();
+                System.out.println("Fallo en la operacion de inserción. Se ejecuta rollback");
+                try {
+                    conexion.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            } catch (Exception e) {
+                repetir = true;
+                tcl.nextLine();
+                System.out.println("Introduzca un valor válido");
+            }
+        } while (repetir);
+        List<Equip>equips = equipDAO.seleccionar();
+        equips.forEach(equip -> {
+            System.out.println("Equip = " + equip);
+        });
+    }
+    public static void eliminarEquipo () throws SQLException {
+        Connection conexion = Conexion.getConnection();
+        System.out.println();
+        tcl.nextLine();
+        int cod = 0;
+        do{
+            try{
+                if(conexion.getAutoCommit()){
+                    conexion.setAutoCommit(false);
+                }
+                repetir = false;
+                System.out.println("Eliminar Equipo: ");
+                System.out.println("Introduzca el codigo del equipo a borrar: ");
+                cod = tcl.nextInt();
+                Equip equip = new Equip(cod);
+                equipDAO.delete(equip);
+                System.out.println("Equipo borrado");
+            }catch (SQLException e) {
+                e.printStackTrace();
+                System.out.println("Fallo en la operacion de inserción. Se ejecuta rollback");
+                try {
+                    conexion.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            } catch (Exception e) {
+                repetir = true;
+                tcl.nextLine();
+                System.out.println("Introduzca un valor válido");
+            }
+        }while (repetir);
+        List<Equip>equips = equipDAO.seleccionar();
+        equips.forEach(equip -> {
+            System.out.println("Equip = " + equip);
+        });
+    }
+    public static void listarBomber() throws SQLException {
+        Connection conexion = Conexion.getConnection();
+        System.out.println();
+        tcl.nextLine();
+        try {
 
+            List<Bomber> bombers = bomberDAO.seleccionar();
+
+            int numeroParque = 0;
+            do {
+                repetir = false;
+                try {
+                    System.out.println("Introduzca el código del parque: ");
+                    numeroParque = tcl.nextInt();
+                } catch (Exception e) {
+                    repetir = true;
+                    tcl.nextLine();
+                    System.out.println("Introduzca un valor válido");
+                }
+            } while (repetir);
+            for (int i = 0; i < bombers.size(); i++) {
+                if (bombers.get(i).getCodEquip() == numeroParque) {
+                    System.out.println(bombers.get(i).toString());
+                }
             }
-        }while(repetir);
-        for (int i=0; i < bombers.size();i++){
-            if(bombers.get(i).getCodEquip() == numeroParque){
-                System.out.println(bombers.get(i).toString());
-            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Fallo en la operacion de inserción. Se ejecuta rollback");
         }
-
     }
 }

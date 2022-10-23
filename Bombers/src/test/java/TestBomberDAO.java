@@ -14,16 +14,17 @@ public class TestBomberDAO {
             if(conexion.getAutoCommit()){
                 conexion.setAutoCommit(false);
             }
-           // Bomber nuevoBomber = new Bomber("Luis", "Calle Nª70", 2, 3, 1);
-           // bomberDAO.insertar(nuevoBomber);
+            Bomber nuevoBomber = new Bomber("Juan", "C/d67", 2, 3, 2, 1);
+            bomberDAO.insert(nuevoBomber);
 
             //BORRAR
-            Bomber bomberBorrar = new Bomber(5);
-            bomberDAO.delete(bomberBorrar);
+           // Bomber bomberBorrar = new Bomber(4);
+            //bomberDAO.delete(bomberBorrar);
 
             //UPDATE
-            Bomber bomberModificar = new Bomber(6, "Pepe", "C/5235", 2, 4, 1);
-            bomberDAO.update(bomberModificar);
+            //Bomber bomberModificar = new Bomber(6, "Pepe", "C/5235", 2, 4, 1);
+            //bomberDAO.update(bomberModificar);
+
             conexion.commit();
 
             List<Bomber> bombers = bomberDAO.seleccionar();
