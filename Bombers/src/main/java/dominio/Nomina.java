@@ -20,6 +20,45 @@ public class Nomina {
         this.liquid_final = liquid_final;
     }
 
+    public int getCategoriaNomina() {
+        return categoriaNomina;
+    }
+
+    public void setCategoriaNomina(int categoriaNomina) {
+        this.categoriaNomina = categoriaNomina;
+    }
+
+    public int getSou_base() {
+        return sou_base;
+    }
+
+    public void setSou_base(int sou_base) {
+        this.sou_base = sou_base;
+    }
+
+    public int getComplements() {
+        return complements;
+    }
+
+    public void setComplements(int complements) {
+        this.complements = complements;
+    }
+
+    public int getPercentatgeRetencio() {
+        return percentatgeRetencio;
+    }
+
+    public void setPercentatgeRetencio(int percentatgeRetencio) {
+        this.percentatgeRetencio = percentatgeRetencio;
+    }
+
+    public int getLiquid_final() {
+        return liquid_final;
+    }
+
+    public void setLiquid_final(int liquid_final) {
+        this.liquid_final = liquid_final;
+    }
 
     public int comprobarCategoriaNomina(int categoriaNomina) {
         int[] categorias = new int[]{1,2,3};

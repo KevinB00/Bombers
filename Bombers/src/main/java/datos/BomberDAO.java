@@ -13,7 +13,7 @@ import static conexion.Conexion.close;
 public class BomberDAO {
     private Connection conexionTransaccional;
 
-    private static final String SQL_SELECT = "SELECT CodBomber, Nom, Adreca, CodParc, CodCarrec, Categoria_nomina  CodEquip FROM bomber";
+    private static final String SQL_SELECT = "SELECT CodBomber, Nom, Adreca, CodParc, CodCarrec, CodEquip, Categoria_nomina FROM bomber";
     private static final String SQL_INSERT = "INSERT INTO bomber (Nom, Adreca, CodParc, CodCarrec, CodEquip, Categoria_nomina) VALUES (?,?,?,?,?,?)";
     private static final String SQL_UPDATE = "UPDATE bomber SET Nom=?, Adreca=?, CodParc=?, CodCarrec=?, CodEquip=?, Categoria_nomina WHERE CodBomber=?";
     private static final String SQL_DELETE = "DELETE FROM bomber WHERE CodBomber=?";
@@ -50,8 +50,6 @@ public class BomberDAO {
                 bomber = new Bomber(CodBomber, Nom, Adreca, CodParc, CodCarrec, CodEquip, Categoria_nomina);
                 bombers.add(bomber);
             }
-        } catch (SQLException e) {
-            e.printStackTrace(System.out);
         } finally {
             try {
                 Conexion.close(rs);
@@ -84,9 +82,6 @@ public class BomberDAO {
             stmt.setInt(5, bomber.getCodEquip());
             stmt.setInt(6, bomber.getCatnomina());
             result = stmt.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace(System.out);
         } finally {
             try {
                 close(stmt);
@@ -121,8 +116,6 @@ public class BomberDAO {
             stmt.setInt(6, bomber.getCodBomber());
             stmt.setInt(7, bomber.getCatnomina());
             result = stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace(System.out);
         } finally {
             try {
                 close(stmt);
@@ -151,8 +144,6 @@ public class BomberDAO {
             stmt = conn.prepareStatement(SQL_DELETE);
             stmt.setInt(1, bomber.getCodBomber());
            result = stmt.executeUpdate();
-        }catch (SQLException e) {
-        e.printStackTrace(System.out);
         }finally {
             try {
                 close(stmt);

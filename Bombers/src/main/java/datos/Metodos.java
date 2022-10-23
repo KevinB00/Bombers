@@ -10,21 +10,22 @@ import java.util.Scanner;
 
 
 public class Metodos {
+    private static Connection conexion = null;
     private static boolean repetir = false;
     private static Scanner tcl = new Scanner(System.in);
-    private static BomberDAO bomberDAO = new BomberDAO();
-    private static ParcBombersDAO parcBombersDAO = new ParcBombersDAO();
-    private static EquipDAO equipDAO = new EquipDAO();
+    private static BomberDAO bomberDAO = new BomberDAO(conexion);
+    private static ParcBombersDAO parcBombersDAO = new ParcBombersDAO(conexion);
+    private static EquipDAO equipDAO = new EquipDAO(conexion);
 
 
     public static void borrarBomber() throws SQLException {
-        Connection conexion = Conexion.getConnection();
         System.out.println();
         tcl.nextLine();
         Bomber bomberBorrar;
         int cod = 0;
         do {
             try {
+                conexion = Conexion.getConnection();
                 if (conexion.getAutoCommit()) {
                     conexion.setAutoCommit(false);
                 }
@@ -35,16 +36,17 @@ public class Metodos {
                 bomberBorrar = new Bomber(cod);
                 bomberDAO.delete(bomberBorrar);
                 System.out.println("Bombero borrado");
-                System.out.println();
+                conexion.commit();
+                System.out.println("Se ha hecho commit");
             } catch (SQLException e) {
-                e.printStackTrace();
+                e.printStackTrace(System.out);
                 System.out.println("Fallo en la operacion de inserción. Se ejecuta rollback");
-                try {
+                try{
                     conexion.rollback();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    ex.printStackTrace(System.out);
                 }
-            } catch (Exception e) {
+            }catch (Exception ex) {
                 repetir = true;
                 tcl.nextLine();
                 System.out.println("Introduzca un valor válido");
@@ -57,7 +59,6 @@ public class Metodos {
 
     }
     public static void insertarBombero() throws SQLException {
-        Connection conexion = Conexion.getConnection();
         System.out.println();
         tcl.nextLine();
         String nombre = null;
@@ -68,6 +69,7 @@ public class Metodos {
         int categoriaNomina = 0;
         do{
             try {
+                conexion = Conexion.getConnection();
                 if(conexion.getAutoCommit()){
                     conexion.setAutoCommit(false);
                 }
@@ -87,10 +89,17 @@ public class Metodos {
                 categoriaNomina = tcl.nextInt();
                 Bomber bomber = new Bomber(nombre, adreca, codParc, codCarrec, codEquip, categoriaNomina);
                 bomberDAO.insert(bomber);
+                conexion.commit();
+                System.out.println("Se ha hecho commit");
             } catch (SQLException e) {
+                e.printStackTrace(System.out);
                 System.out.println("Fallo en la operacion de inserción. Se ejecuta rollback");
+                try{
                 conexion.rollback();
-                } catch (Exception e) {
+                } catch (SQLException ex) {
+                    ex.printStackTrace(System.out);
+                }
+                }catch (Exception ex) {
                 repetir = true;
                 tcl.nextLine();
                 System.out.println("Introduzca un valor válido");
@@ -102,7 +111,6 @@ public class Metodos {
         });
     }
 public static void actualizarBombero() throws SQLException {
-    Connection conexion = Conexion.getConnection();
     System.out.println();
     tcl.nextLine();
     String nombre = null;
@@ -115,6 +123,7 @@ public static void actualizarBombero() throws SQLException {
 
     do{
         try {
+            conexion = Conexion.getConnection();
             if(conexion.getAutoCommit()){
                 conexion.setAutoCommit(false);
             }
@@ -136,15 +145,17 @@ public static void actualizarBombero() throws SQLException {
             codBombero = tcl.nextInt();
             Bomber bomber = new Bomber(codBombero, nombre, adreca, codParc, codCarrec, codEquip, catNomina);
             bomberDAO.update(bomber);
+            conexion.commit();
+            System.out.println("Se ha hecho commit");
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(System.out);
             System.out.println("Fallo en la operacion de inserción. Se ejecuta rollback");
-            try {
+            try{
                 conexion.rollback();
             } catch (SQLException ex) {
-                ex.printStackTrace();
+                ex.printStackTrace(System.out);
             }
-        } catch (Exception e) {
+        }catch (Exception ex) {
             repetir = true;
             tcl.nextLine();
             System.out.println("Introduzca un valor válido");
@@ -156,13 +167,13 @@ public static void actualizarBombero() throws SQLException {
     });
 }
     public static void insertarParc() throws SQLException {
-        Connection conexion = Conexion.getConnection();
         System.out.println();
         tcl.nextLine();
         String direccion = null;
         int categoria = 0;
         do{
             try {
+                conexion = Conexion.getConnection();
                 if(conexion.getAutoCommit()){
                     conexion.setAutoCommit(false);
                 }
@@ -174,15 +185,17 @@ public static void actualizarBombero() throws SQLException {
                 categoria = tcl.nextInt();
                 ParcBombers parcBombers = new ParcBombers(direccion, categoria);
                 parcBombersDAO.insert(parcBombers);
-            }catch (SQLException e) {
-                e.printStackTrace();
+                conexion.commit();
+                System.out.println("Se ha hecho commit");
+            } catch (SQLException e) {
+                e.printStackTrace(System.out);
                 System.out.println("Fallo en la operacion de inserción. Se ejecuta rollback");
-                try {
+                try{
                     conexion.rollback();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    ex.printStackTrace(System.out);
                 }
-            } catch (Exception e) {
+            }catch (Exception ex) {
                 repetir = true;
                 tcl.nextLine();
                 System.out.println("Introduzca un valor válido");
@@ -194,7 +207,6 @@ public static void actualizarBombero() throws SQLException {
         });
     }
     public static void updateParcBombers() throws SQLException {
-        Connection conexion = Conexion.getConnection();
         System.out.println();
         tcl.nextLine();
         String direccion = null;
@@ -202,6 +214,7 @@ public static void actualizarBombero() throws SQLException {
         int codParc = 0;
         do{
             try {
+                conexion = Conexion.getConnection();
                 if(conexion.getAutoCommit()){
                     conexion.setAutoCommit(false);
                 }
@@ -215,15 +228,17 @@ public static void actualizarBombero() throws SQLException {
                 codParc = tcl.nextInt();
                 ParcBombers parcBombers = new ParcBombers(codParc, direccion, categoria);
                 parcBombersDAO.update(parcBombers);
-            }catch (SQLException e) {
-                e.printStackTrace();
+                conexion.commit();
+                System.out.println("Se ha hecho commit");
+            } catch (SQLException e) {
+                e.printStackTrace(System.out);
                 System.out.println("Fallo en la operacion de inserción. Se ejecuta rollback");
-                try {
+                try{
                     conexion.rollback();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    ex.printStackTrace(System.out);
                 }
-            } catch (Exception e) {
+            }catch (Exception ex) {
                 repetir = true;
                 tcl.nextLine();
                 System.out.println("Introduzca un valor válido");
@@ -242,6 +257,7 @@ public static void actualizarBombero() throws SQLException {
         int cod = 0;
         do {
             try {
+                conexion = Conexion.getConnection();
                 if (conexion.getAutoCommit()){
                     conexion.setAutoCommit(false);
                 }
@@ -252,16 +268,17 @@ public static void actualizarBombero() throws SQLException {
                 ParcBombers parcBombers = new ParcBombers(cod);
                 parcBombersDAO.delete(parcBombers);
                 System.out.println("Parque borrado");
-                System.out.println();
+                conexion.commit();
+                System.out.println("Se ha hecho commit");
             } catch (SQLException e) {
-                e.printStackTrace();
+                e.printStackTrace(System.out);
                 System.out.println("Fallo en la operacion de inserción. Se ejecuta rollback");
-                try {
+                try{
                     conexion.rollback();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    ex.printStackTrace(System.out);
                 }
-            } catch (Exception e) {
+            }catch (Exception ex) {
                 repetir = true;
                 tcl.nextLine();
                 System.out.println("Introduzca un valor válido");
@@ -273,13 +290,13 @@ public static void actualizarBombero() throws SQLException {
         });
     }
     public static void insertarParcVIP() throws SQLException {
-        Connection conexion = Conexion.getConnection();
         System.out.println();
         tcl.nextLine();
         String direccion = null;
         int categoria = 0;
         do {
             try {
+                conexion = Conexion.getConnection();
                 if (conexion.getAutoCommit()) {
                     conexion.setAutoCommit(false);
                 }
@@ -293,15 +310,17 @@ public static void actualizarBombero() throws SQLException {
                 } while (categoria < 5);
                 ParcBombers parcBombers = new ParcBombers(direccion, categoria);
                 parcBombersDAO.insert(parcBombers);
+                conexion.commit();
+                System.out.println("Se ha hecho commit");
             } catch (SQLException e) {
-                e.printStackTrace();
+                e.printStackTrace(System.out);
                 System.out.println("Fallo en la operacion de inserción. Se ejecuta rollback");
-                try {
+                try{
                     conexion.rollback();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    ex.printStackTrace(System.out);
                 }
-            } catch (Exception e) {
+            }catch (Exception ex) {
                 repetir = true;
                 tcl.nextLine();
                 System.out.println("Introduzca un valor válido");
@@ -313,12 +332,12 @@ public static void actualizarBombero() throws SQLException {
         });
     }
     public static void insertarEquipo() throws SQLException {
-        Connection conexion = Conexion.getConnection();
         System.out.println();
         tcl.nextLine();
         String nombre = null;
         do{
             try {
+                conexion = Conexion.getConnection();
                 if(conexion.getAutoCommit()) {
                     conexion.setAutoCommit(false);
                 }
@@ -328,15 +347,17 @@ public static void actualizarBombero() throws SQLException {
                 nombre = tcl.nextLine();
                 Equip equip = new Equip(nombre);
                 equipDAO.insert(equip);
-            }catch (SQLException e) {
-                e.printStackTrace();
+                conexion.commit();
+                System.out.println("Se ha hecho commit");
+            } catch (SQLException e) {
+                e.printStackTrace(System.out);
                 System.out.println("Fallo en la operacion de inserción. Se ejecuta rollback");
-                try {
+                try{
                     conexion.rollback();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    ex.printStackTrace(System.out);
                 }
-            } catch (Exception e) {
+            }catch (Exception ex) {
                 repetir = true;
                 tcl.nextLine();
                 System.out.println("Introduzca un valor válido");
@@ -348,13 +369,13 @@ public static void actualizarBombero() throws SQLException {
         });
     }
     public static void actualizarEquipo() throws SQLException {
-        Connection conexion = Conexion.getConnection();
         System.out.println();
         tcl.nextLine();
         String nombre = null;
         int codEquip = 0;
         do{
             try{
+                conexion = Conexion.getConnection();
                 if(conexion.getAutoCommit()){
                     conexion.setAutoCommit(false);
                 }
@@ -366,15 +387,17 @@ public static void actualizarBombero() throws SQLException {
                 codEquip = tcl.nextInt();
                 Equip equip = new Equip(codEquip, nombre);
                 equipDAO.update(equip);
-            }catch (SQLException e) {
-                e.printStackTrace();
+                conexion.commit();
+                System.out.println("Se ha hecho commit");
+            } catch (SQLException e) {
+                e.printStackTrace(System.out);
                 System.out.println("Fallo en la operacion de inserción. Se ejecuta rollback");
-                try {
+                try{
                     conexion.rollback();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    ex.printStackTrace(System.out);
                 }
-            } catch (Exception e) {
+            }catch (Exception ex) {
                 repetir = true;
                 tcl.nextLine();
                 System.out.println("Introduzca un valor válido");
@@ -386,12 +409,12 @@ public static void actualizarBombero() throws SQLException {
         });
     }
     public static void eliminarEquipo () throws SQLException {
-        Connection conexion = Conexion.getConnection();
         System.out.println();
         tcl.nextLine();
         int cod = 0;
         do{
             try{
+                conexion = Conexion.getConnection();
                 if(conexion.getAutoCommit()){
                     conexion.setAutoCommit(false);
                 }
@@ -402,15 +425,17 @@ public static void actualizarBombero() throws SQLException {
                 Equip equip = new Equip(cod);
                 equipDAO.delete(equip);
                 System.out.println("Equipo borrado");
-            }catch (SQLException e) {
-                e.printStackTrace();
+                conexion.commit();
+                System.out.println("Se ha hecho commit");
+            } catch (SQLException e) {
+                e.printStackTrace(System.out);
                 System.out.println("Fallo en la operacion de inserción. Se ejecuta rollback");
-                try {
+                try{
                     conexion.rollback();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    ex.printStackTrace(System.out);
                 }
-            } catch (Exception e) {
+            }catch (Exception ex) {
                 repetir = true;
                 tcl.nextLine();
                 System.out.println("Introduzca un valor válido");
@@ -422,13 +447,10 @@ public static void actualizarBombero() throws SQLException {
         });
     }
     public static void listarBomber() throws SQLException {
-        Connection conexion = Conexion.getConnection();
         System.out.println();
         tcl.nextLine();
         try {
-
             List<Bomber> bombers = bomberDAO.seleccionar();
-
             int numeroParque = 0;
             do {
                 repetir = false;
@@ -449,7 +471,6 @@ public static void actualizarBombero() throws SQLException {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Fallo en la operacion de inserción. Se ejecuta rollback");
         }
     }
 }

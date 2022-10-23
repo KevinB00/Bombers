@@ -43,9 +43,7 @@ public class EquipDAO {
                 equip = new Equip(CodEquip, Nom);
                 equips.add(equip);
             }
-        }catch (SQLException e) {
-            e.printStackTrace(System.out);
-            }finally {
+        }finally {
             try {
                 Conexion.close(rs);
                 Conexion.close(stmt);
@@ -72,8 +70,6 @@ public class EquipDAO {
             stmt = conn.prepareStatement(SQL_INSERT);
             stmt.setString(1, equip.getNom());
             result = stmt.executeUpdate();
-        }catch (SQLException e) {
-            e.printStackTrace(System.out);
         }finally {
             try {
                 close(stmt);
@@ -103,8 +99,6 @@ public class EquipDAO {
             stmt.setString(1, equip.getNom());
             stmt.setInt(2, equip.getCodEquip());
             result = stmt.executeUpdate();
-        }catch (SQLException e) {
-        e.printStackTrace(System.out);
         }finally {
             try {
                 close(stmt);
@@ -132,8 +126,6 @@ public class EquipDAO {
             stmt = conn.prepareStatement(SQL_DELETE);
             stmt.setInt(1, equip.getCodEquip());
             result = stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace(System.out);
         } finally {
             try {
                 close(stmt);
