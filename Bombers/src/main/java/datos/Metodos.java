@@ -2,6 +2,7 @@ package datos;
 import conexion.Conexion;
 import dominio.Bomber;
 import dominio.Equip;
+import dominio.Nomina;
 import dominio.ParcBombers;
 
 import java.sql.*;
@@ -16,6 +17,7 @@ public class Metodos {
     private static BomberDAO bomberDAO = new BomberDAO(conexion);
     private static ParcBombersDAO parcBombersDAO = new ParcBombersDAO(conexion);
     private static EquipDAO equipDAO = new EquipDAO(conexion);
+    private static NominaDAO nominaDAO = new NominaDAO(conexion);
 
 
     public static void borrarBomber() throws SQLException {
@@ -30,6 +32,10 @@ public class Metodos {
                     conexion.setAutoCommit(false);
                 }
                 repetir = false;
+                List<Bomber> bombers = bomberDAO.seleccionar();
+                bombers.forEach(bomber -> {
+                    System.out.println("Bomber = " + bomber);
+                });
                 System.out.println("Borrar bombero");
                 System.out.println("Introduzca el código del bombero a borrar");
                 cod = tcl.nextInt();
@@ -61,8 +67,11 @@ public class Metodos {
     public static void insertarBombero() throws SQLException {
         System.out.println();
         tcl.nextLine();
+        int codBombero = 0;
         String nombre = null;
         String adreca = null;
+        String fechaini = null;
+        String fechafin = null;
         int codParc = 0;
         int codCarrec = 0;
         int codEquip = 0;
@@ -85,10 +94,22 @@ public class Metodos {
                 codCarrec = tcl.nextInt();
                 System.out.println("Código del equipo: ");
                 codEquip = tcl.nextInt();
+                Bomber bomber = new Bomber(nombre, adreca, codParc, codCarrec, codEquip);
+                bomberDAO.insert(bomber);
+                List<Bomber> bombers = bomberDAO.seleccionar();
+                bombers.forEach(bombero -> {
+                    System.out.println("Bomber = " + bombero);
+                });
+                System.out.println("Codigo del bombero:");
+                codBombero = tcl.nextInt();
                 System.out.println("Categoria de la nomina: ");
                 categoriaNomina = tcl.nextInt();
-                Bomber bomber = new Bomber(nombre, adreca, codParc, codCarrec, codEquip, categoriaNomina);
-                bomberDAO.insert(bomber);
+                System.out.println("Fecha de inicio YYYY-MM-DD: ");
+                fechaini = tcl.next();
+                System.out.println("Fecha de fin YYYY-MM-DD: ");
+                fechafin = tcl.next();
+                Nomina nomina = new Nomina(categoriaNomina, codBombero, fechaini, fechafin);
+                nominaDAO.insert(nomina);
                 conexion.commit();
                 System.out.println("Se ha hecho commit");
             } catch (SQLException e) {
@@ -139,11 +160,9 @@ public static void actualizarBombero() throws SQLException {
             codCarrec = tcl.nextInt();
             System.out.println("Código del equipo: ");
             codEquip = tcl.nextInt();
-            System.out.println("Categoria de la nómina");
-            catNomina = tcl.nextInt();
             System.out.println("Código del Bombero a actualizar: ");
             codBombero = tcl.nextInt();
-            Bomber bomber = new Bomber(codBombero, nombre, adreca, codParc, codCarrec, codEquip, catNomina);
+            Bomber bomber = new Bomber(codBombero, nombre, adreca, codParc, codCarrec, codEquip);
             bomberDAO.update(bomber);
             conexion.commit();
             System.out.println("Se ha hecho commit");

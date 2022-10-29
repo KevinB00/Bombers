@@ -11,38 +11,28 @@ public class Bomber {
     private int codParc;
     private int codCarrec;
     private int codEquip;
-    private int catnomina;
+
 
 
     public Bomber(int cod) {
         this.codBomber = cod;
     }
 
-    public Bomber(String nom, String adreca, int codParc, int codCarrec,int codEquip, int catnomina) {
+    public Bomber(String nom, String adreca, int codParc, int codCarrec,int codEquip) {
         this.nom = nom;
         this.adreca = adreca;
         this.codParc = codParc;
         this.codCarrec = codCarrec;
         this.codEquip = codEquip;
-        this.catnomina = catnomina;
     }
 
-    public Bomber(int codBomber, String nom, String adreca, int codParc, int codCarrec, int codEquip, int catnomina) {
+    public Bomber(int codBomber, String nom, String adreca, int codParc, int codCarrec, int codEquip) {
         this.codBomber = codBomber;
         this.nom = nom;
         this.adreca = adreca;
         this.codParc = codParc;
         this.codCarrec = codCarrec;
         this.codEquip = codEquip;
-        this.catnomina = catnomina;
-    }
-
-    public int getCatnomina() {
-        return catnomina;
-    }
-
-    public void setCatnomina(int catnomina) {
-        this.catnomina = catnomina;
     }
 
     public int getCodBomber() {
@@ -113,7 +103,6 @@ public class Bomber {
                 ", CodParc=" + codParc +
                 ", CodCarrec=" + codCarrec +
                 ", CodEquip=" + codEquip +
-                ", Catnomina=" + catnomina +
                 '}';
     }
 }

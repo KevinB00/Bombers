@@ -2,22 +2,29 @@ package dominio;
 
 public class Nomina {
     private int categoriaNomina;
-    private int sou_base;
-    private int complements;
-    private int percentatgeRetencio;
-    private int liquid_final;
+    private int codBomber;
+    private String fechaini;
+    private String fechafin;
+    private double liquidFinal;
 
-    public Nomina(int categoriaNomina){
-            this.categoriaNomina = comprobarCategoriaNomina(categoriaNomina);
-
+    public Nomina(int categoriaNomina, int codBomber) {
+        this.categoriaNomina = categoriaNomina;
+        this.codBomber = codBomber;
     }
-    public Nomina(int categoriaNomina, int sou_base, int complements, int percentatgeRetencio, int liquid_final){
-        this.categoriaNomina = comprobarCategoriaNomina(categoriaNomina);
 
-        this.sou_base = sou_base;
-        this.complements = complements;
-        this.percentatgeRetencio = percentatgeRetencio;
-        this.liquid_final = liquid_final;
+    public Nomina(int categoriaNomina, int codBomber, String fechaini, String fechafin, double liquidFinal) {
+        this.categoriaNomina = categoriaNomina;
+        this.codBomber = codBomber;
+        this.fechaini = fechaini;
+        this.fechafin = fechafin;
+        this.liquidFinal = liquidFinal;
+    }
+
+    public Nomina(int categoriaNomina, int codBomber, String fechaini, String fechafin) {
+        this.categoriaNomina = categoriaNomina;
+        this.codBomber = codBomber;
+        this.fechaini = fechaini;
+        this.fechafin = fechafin;
     }
 
     public int getCategoriaNomina() {
@@ -28,45 +35,35 @@ public class Nomina {
         this.categoriaNomina = categoriaNomina;
     }
 
-    public int getSou_base() {
-        return sou_base;
+    public int getCodBomber() {
+        return codBomber;
     }
 
-    public void setSou_base(int sou_base) {
-        this.sou_base = sou_base;
+    public void setCodBomber(int codBomber) {
+        this.codBomber = codBomber;
     }
 
-    public int getComplements() {
-        return complements;
+    public String getFechaini() {
+        return fechaini;
     }
 
-    public void setComplements(int complements) {
-        this.complements = complements;
+    public void setFechaini(String fechaini) {
+        this.fechaini = fechaini;
     }
 
-    public int getPercentatgeRetencio() {
-        return percentatgeRetencio;
+    public String getFechafin() {
+        return fechafin;
     }
 
-    public void setPercentatgeRetencio(int percentatgeRetencio) {
-        this.percentatgeRetencio = percentatgeRetencio;
+    public void setFechafin(String fechafin) {
+        this.fechafin = fechafin;
     }
 
-    public int getLiquid_final() {
-        return liquid_final;
+    public double getLiquidFinal() {
+        return liquidFinal;
     }
 
-    public void setLiquid_final(int liquid_final) {
-        this.liquid_final = liquid_final;
-    }
-
-    public int comprobarCategoriaNomina(int categoriaNomina) {
-        int[] categorias = new int[]{1,2,3};
-        int resultado = 0;
-        for (int i = 0; i < categorias.length; i++){
-            if (categoriaNomina == categorias[i]) resultado = categoriaNomina;
-            else resultado = 0;
-        }
-        return resultado;
+    public void setLiquidFinal(double liquidFinal) {
+        this.liquidFinal = liquidFinal;
     }
 }

@@ -1,4 +1,4 @@
-package datos;
+package vista;
 
 import java.sql.SQLException;
 import java.util.Scanner;
