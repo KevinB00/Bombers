@@ -492,4 +492,17 @@ public static void actualizarBombero() throws SQLException {
             e.printStackTrace();
         }
     }
+
+    public static void listarBomberoLiquidosFinales() {
+        System.out.println();
+        try{
+            System.out.println("Listar Bombero-Liquido");
+            List<Bomber> bombers = bomberDAO.seleccionarBomberoLiquido();
+            for (int i = 0; i < bombers.size(); i++) {
+                System.out.println(bombers.get(i).toStringLiquidoFinal());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

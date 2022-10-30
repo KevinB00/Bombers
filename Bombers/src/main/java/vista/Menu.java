@@ -15,6 +15,7 @@ public class Menu {
             System.out.println("4. Listar bomberos por parque");
             System.out.println("5. Insertar Parque de Bomberos-VIP");
             System.out.println("6. Borrar bombero y sus turnos trabajados");
+            System.out.println("7. Listar bomberos y liquido final de nómina de septiembre 2022 (turno noche)");
             System.out.println("0. Salir");
             System.out.println("Eliga una opción: ");
             opcion = tcl.nextInt();
@@ -116,6 +117,9 @@ public class Menu {
                     break;
                 case 6:
                     Metodos.borrarBomber();
+                    break;
+                case 7:
+                    Metodos.listarBomberoLiquidosFinales();
                 case 0:
                     System.out.println("************ FIN DEL PROGRAMA ************");
                     break;

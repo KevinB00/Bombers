@@ -11,14 +11,21 @@ public class Bomber {
     private int codParc;
     private int codCarrec;
     private int codEquip;
-
+    private double liquidFinal;
 
 
     public Bomber(int cod) {
         this.codBomber = cod;
     }
 
-    public Bomber(String nom, String adreca, int codParc, int codCarrec,int codEquip) {
+    public Bomber(int codBomber, String nom, String adreca, double liquidFinal) {
+        this.codBomber = codBomber;
+        this.nom = nom;
+        this.adreca = adreca;
+        this.liquidFinal = liquidFinal;
+    }
+
+    public Bomber(String nom, String adreca, int codParc, int codCarrec, int codEquip) {
         this.nom = nom;
         this.adreca = adreca;
         this.codParc = codParc;
@@ -33,6 +40,14 @@ public class Bomber {
         this.codParc = codParc;
         this.codCarrec = codCarrec;
         this.codEquip = codEquip;
+    }
+
+    public double getLiquidFinal() {
+        return liquidFinal;
+    }
+
+    public void setLiquidFinal(double liquidFinal) {
+        this.liquidFinal = liquidFinal;
     }
 
     public int getCodBomber() {
@@ -104,5 +119,14 @@ public class Bomber {
                 ", CodCarrec=" + codCarrec +
                 ", CodEquip=" + codEquip +
                 '}';
+    }
+    public String toStringLiquidoFinal() {
+        return "Bomber{" +
+                "CodBomber=" + codBomber +
+                ", Nom='" + nom + '\'' +
+                ", Adreca='" + adreca + '\'' +
+                ", Liquid_final='" + liquidFinal +
+                '}';
+
     }
 }
